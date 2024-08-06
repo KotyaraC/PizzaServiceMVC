@@ -1,0 +1,86 @@
+﻿@model Test.ViewModels.AdminViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<h2>Pizzas</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Weight</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pizza in Model.Pizzas)
+        {
+            <tr>
+                <td>@pizza.Id</td>
+                <td>@pizza.Name</td>
+                <td>@pizza.Description</td>
+                <td>@pizza.Weight</td>
+                <td>@pizza.Price</td>
+                <td><img src="@pizza.ImagePath" alt="@pizza.Name" width="100" /></td>
+                <td>
+                    <form asp-action="DeletePizza" method="post" onsubmit="return confirm('Are you sure you want to delete this pizza?');">
+                        <input type="hidden" name="id" value="@pizza.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Add New Pizza</h2>
+<form asp-action="AddPizza" method="get">
+    <div class="form-group">
+        <input type="submit" value="Add Pizza" class="btn btn-primary" />
+    </div>
+</form>
+
+<h2>Orders</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Pizza ID</th>
+            <th>User Name</th>
+            <th>User Phone</th>
+            <th>Is Completed</th>
+            <th>Order Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.PizzaId</td>
+                <td>@order.UserName</td>
+                <td>@order.UserPhone</td>
+                <td>@order.IsCompleted</td>
+                <td>@order.OrderDate</td>
+                <td>
+                    <form asp-action="CompleteOrder" method="post">
+                        <input type="hidden" name="id" value="@order.Id" />
+                        <input type="submit" value="Complete" class="btn btn-success" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
